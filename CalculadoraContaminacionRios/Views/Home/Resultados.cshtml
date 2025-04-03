@@ -1,0 +1,48 @@
+@model YourNamespace.Models.ContaminacionModel
+
+@{
+    ViewData["Title"] = "Resultados de Cálculo de Contaminación";
+}
+
+<h2>Resultados de Cálculo de Contaminación</h2>
+
+<div>
+    <h3>Resultados</h3>
+    <p><strong>Concentración:</strong> @Model.Concentracion</p>
+    <p><strong>Velocidad:</strong> @Model.Velocidad</p>
+    <p><strong>Límite Inferior:</strong> @Model.LimiteInferior</p>
+    <p><strong>Límite Superior:</strong> @Model.LimiteSuperior</p>
+    <p><strong>Carga Contaminante (Trapecio):</strong> @Model.ResultadoTrapecio</p>
+    <p><strong>Carga Contaminante (Simpson):</strong> @Model.ResultadoSimpson</p>
+</div>
+
+<div>
+    <h3>Gráficos</h3>
+    <canvas id="graficoResultados"></canvas>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('graficoResultados').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.PuntosX)),
+                datasets: [{
+                    label: 'Carga Contaminante',
+                    data: @Html.Raw(Json.Serialize(Model.PuntosY)),
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
+                }
+            }
+        });
+    </script>
+}

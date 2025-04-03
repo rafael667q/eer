@@ -1,0 +1,55 @@
+@{
+    ViewData["Title"] = "Calculadora de Contaminación de Ríos";
+}
+
+<h1>Calculadora de Contaminación de Ríos</h1>
+
+<div class="container">
+    <form asp-action="Resultados" method="post">
+        <div class="form-group">
+            <label for="concentracion">Concentración (C):</label>
+            <input type="number" class="form-control" id="concentracion" name="concentracion" required />
+        </div>
+        <div class="form-group">
+            <label for="velocidad">Velocidad (v):</label>
+            <input type="number" class="form-control" id="velocidad" name="velocidad" required />
+        </div>
+        <div class="form-group">
+            <label for="limiteInferior">Límite Inferior:</label>
+            <input type="number" class="form-control" id="limiteInferior" name="limiteInferior" required />
+        </div>
+        <div class="form-group">
+            <label for="limiteSuperior">Límite Superior:</label>
+            <input type="number" class="form-control" id="limiteSuperior" name="limiteSuperior" required />
+        </div>
+        <div class="form-group">
+            <label>Método de Integración:</label>
+            <select class="form-control" name="metodo">
+                <option value="trapecio">Trapecio</option>
+                <option value="simpson">Simpson</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Calcular</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("form").validate({
+            rules: {
+                Concentracion: { required: true, min: 0 },
+                Velocidad: { required: true, min: 0 },
+                LimiteInferior: { required: true },
+                LimiteSuperior: { required: true, min: function () { return parseFloat($("#LimiteInferior").val()); } }
+            },
+            messages: {
+                Concentracion: "Por favor, ingrese una concentración válida.",
+                Velocidad: "Por favor, ingrese una velocidad válida.",
+                LimiteInferior: "Por favor, ingrese el límite inferior.",
+                LimiteSuperior: "El límite superior debe ser mayor o igual al límite inferior."
+            }
+        });
+    });
+</script>
